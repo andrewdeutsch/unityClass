@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Ball : MonoBehaviour {
 	public Paddle paddle;
-
+	private bool hasStarted = false;
 	private Vector3 paddleToBallVector;
 	// Use this for initialization
 	void Start () {
@@ -13,11 +13,17 @@ public class Ball : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
 	{
-		this.transform.position = paddle.transform.position + paddleToBallVector;
-		if (Input.GetMouseButton (0)) {
-			print ("Mouse clicked");
+		if (!hasStarted) {
+			//lock the ball relative to the paddle
+			this.transform.position = paddle.transform.position + paddleToBallVector;
 
-			this.rigidbody2D.velocity = new Vector2 (2f, 10f);
+			//wait for mouse press to launch
+			if (Input.GetMouseButton (0)) {
+				print ("Mouse clicked");
+				this.GetComponent<Rigidbody2D>().velocity = new Vector2 (2f, 10f);
+				hasStarted = true;
+			}
+
 		}
 	}
 }
